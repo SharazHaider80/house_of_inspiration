@@ -24,8 +24,8 @@ def get_doc_content(filename: str) -> str:
 # ---------- TOOL 1 ----------
 @tool
 def search_database(query: str) -> str:
-    """Searches a local or external database and returns results for a given query."""
-    return f"[Basf is a chemical company operating all over the world] Found info related to '{query}'"
+    """for greeting messages"""
+    return f"Hi how can i help you?"
 
 # ---------- TOOL 2 ----------
 @tool
@@ -67,31 +67,31 @@ tools = [
     Tool(
         name="DatabaseSearch",
         func=search_database,
-        description="Useful for general DB or external structured queries."
+        description="Useful for greeting questions and behave naturly"
     ),
     Tool(
         name="UberMichInfo",
         func=uber_mich_info,
-        description="Questions about Ester, her journey, and core inspiration."
+        description="Questions about Ester, her journey, and core inspiration. not for greeting"
     ),
     Tool(
         name="WebpagePhilosophy",
         func=webpage_philosophy,
-        description="Details from the website about house philosophy and purpose."
+        description="Details from the website about house philosophy and purpose. not for greeting"
     ),
     Tool(
         name="AngebotsDetails",
         func=angebotsdetails,
-        description="Information on Leermondzyklus and Heart Circle (Inner Circle)."
+        description="Information on Leermondzyklus and Heart Circle (Inner Circle). not for greeting"
     ),
     Tool(
         name="HerzraumHintergrund",
         func=herzraum_hintergrund,
-        description="Context, audience, and vision behind Ester’s work."
+        description="Context, audience, and vision behind Ester’s work. not for greeting"
     ),
     Tool(
         name="MietinfoRetreathaus",
         func=mietinfo_retreathaus,
-        description="Booking and retreat house information, structure, logistics."
+        description="Booking and retreat house information, structure, logistics. not for greeting"
     ),
 ]

@@ -1,80 +1,58 @@
 from src.llm_provider.openai_client import get_langchain_llm
 from langchain.agents import initialize_agent
 from langchain.agents.agent_types import AgentType
-from langchain_core.tools import tool
-from src.llm_provider.openai_client import get_langchain_llm
 from src.tools.tools import tools
 from langchain.schema.messages import SystemMessage
-from langchain.memory import ConversationBufferMemory
 
 # ---------- AGENT FUNCTION ----------
-# Define system message
+# Define system message with greeting guidance
 SYSTEM_MESSAGE = SystemMessage(
     content="""
-You are a knowledgeable and empathetic assistant for the Home of Inspiration/HOI website.
+        You are the Home of Inspiration (HOI) Bot — a knowledgeable, empathetic assistant for Ester’s website.
+        understand tools description and use them if needed
 
-1. **Greeting Behavior**  
-   - If the user greets you (e.g., “hi”, “hello”, “hey”), always reply:  
-     “Hi, I’m the HOI Bot — how can I help you today?”  
-   - Do **not** treat greetings as full queries; just perform the greeting response.
+        Instructions:
+        - Only output either a tool invocation or a direct answer. Do NOT include any internal thoughts, reasoning steps, or chain-of-thought.
+        - If the user greets you ("hi", "hello", "hey"), respond with: "Hi, I’m the HOI Bot — how can I help you today?"
 
-Your purpose is to help users:
-- Understand who Ester is and what she stands for
-- Learn about the vision behind the Home of Inspiration
-- Discover the energy and intention behind the space
-- Get practical guidance on how to engage with or use the space
+        1. Greeting Behavior
+        - Greet the user warmly when they say "hi", "hello", "hey", etc.
+        - Do not invoke tools for simple greetings.
 
-Use the provided internal knowledge (such as "Über mich" and other page content) to answer questions clearly, helpfully, and with warmth.
+        2. Mission & Tools
+        Use your internal knowledge to help users with information about Ester and HOI.
+        When action is required (booking, contacting, visiting), call exactly one appropriate tool based on the query.
 
-For each user query:
-- Explain *what* they’re asking about using accurate and relevant content
-- If appropriate, guide them on *how* they can take action (e.g., book, contact, visit, reflect)
-- If the question goes beyond the available information, respond with:
-  “Leider habe ich dazu keine Informationen.”
+        3. Query Handling
+        a. Clarify: Restate user intent.
+        b. Answer: Provide accurate, warm information.
+        c. Action: Invoke one matching tool — no more than one per query.
+        d. Fallback: If no info, respond:
+           "Leider habe ich dazu keine Informationen."
 
-Keep your tone clear, supportive, and inspiring — aligned with Ester’s values of authenticity, clarity, and emotional resonance.
-
-"""
+        4. Tone & Style
+        Clear, supportive, inspiring — reflect authenticity and emotional resonance.
+    """
 )
 
-# Initialize memory for chat history
-memory = ConversationBufferMemory(
-    memory_key="chat_history",  # key under which the history is stored
-    return_messages=True       # return list of messages objects
-)
 
 def generate_llm_response(query: str) -> str:
-   
+    """
+    Generate a response to the user's query using the agent.
+    All inputs are passed to the LLM; greeting behavior is handled by the system prompt.
+    """
     try:
         llm = get_langchain_llm()
-
         agent = initialize_agent(
             tools=tools,
             llm=llm,
             agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-            agent_kwargs={
-                "system_message": SYSTEM_MESSAGE
-            },
-            memory=memory,
+            agent_kwargs={"system_message": SYSTEM_MESSAGE},
             verbose=True,
             handle_parsing_errors=True
         )
-
-        # Run the agent with the new query; memory updates automatically
-        response = agent.run(query)
-
-        return response
+        # Process the query, let LLM handle greetings or use tools appropriately
+        return agent.run(query)
 
     except Exception as e:
         raise Exception(f"Failed to generate LLM response with tools and system prompt: {e}")
-
-
-def get_chat_history() -> list:
-    """
-    Retrieve the current conversation history.
-
-    Returns:
-        list: List of message objects representing the chat history.
-    """
-    # memory.chat_memory.messages is list of BaseMessage
-    return memory.load_memory_variables({}).get("chat_history", [])
