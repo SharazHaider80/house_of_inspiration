@@ -5,7 +5,7 @@ from src.inquiry.service import generate_llm_response  # Correct import path
 
 router = APIRouter()
 
-@router.get("/inquiry/")
+@router.post("/inquiry/")
 async def inquire(query: str):
     try:
         response = generate_llm_response(query)
