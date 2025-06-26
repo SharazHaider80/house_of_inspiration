@@ -25,7 +25,7 @@ def get_doc_content(filename: str) -> str:
 @tool
 def search_database(query: str) -> str:
     """for greeting messages"""
-    return f"Hi how can i help you?"
+    return f"Hi, iam HOI Bot. how can i help you?"
 
 # ---------- TOOL 2 ----------
 @tool

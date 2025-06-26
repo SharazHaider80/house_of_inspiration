@@ -10,7 +10,7 @@ def get_langchain_llm():
         
         llm = ChatOpenAI(
             openai_api_key=OPENAI_API_KEY,
-            model_name="gpt-3.5-turbo",
+            model_name="gpt-4o",
             temperature=0.7
         )
         return llm
