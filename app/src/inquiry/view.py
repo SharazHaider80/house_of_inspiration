@@ -12,3 +12,11 @@ async def inquire(query: str):
         return {"response": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/greeting/")
+async def greeting():
+    try:
+        message = "Hi, I’m the HOI Bot. I can guide you through booking sessions, share information about Ester and the Home of Inspiration, and help you explore our offerings. How can I help you today?"
+        return {"response": message}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

@@ -26,7 +26,7 @@ app.include_router(inquiry_router, prefix="/api", tags=["inquiry"])
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the LLM Inquiry API. Use /api/inquiry?query=your_query"}
+    return {"message": "Welcome to the LLM Inquiry API. Use Post: /api/inquiry?query=your_query  or Get: /api/greeting"}
 
 if __name__ == "__main__":
     uvicorn.run(
