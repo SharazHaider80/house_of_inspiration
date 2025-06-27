@@ -43,7 +43,7 @@ SYSTEM_MESSAGE = SystemMessage(
                 Tool Usage:
                 - Only invoke tools when specific actions are needed
                 - Never use tools for simple greetings or general questions
-                - One tool per query maximum
+                - Two tool per query maximum
 
                 return "No information available" if no relevant information is found.
                 """
@@ -62,11 +62,17 @@ def generate_llm_response(query: str) -> str:
             llm=llm,
             agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
             agent_kwargs={"system_message": SYSTEM_MESSAGE},
+            max_iterations=2,
             verbose=True,
             handle_parsing_errors=True
         )
         # Process the query, let LLM handle greetings or use tools appropriately
-        return agent.run(query)
+        response =  agent.run(query)
+
+        if 'agent stopped' in response.lower():
+            return "No information available, please provide more context"
+        else:
+            return response
 
     except Exception as e:
-        raise Exception(f"Failed to generate LLM response with tools and system prompt: {e}")
+        return "No information available"
