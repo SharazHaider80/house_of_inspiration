@@ -25,7 +25,12 @@ def get_doc_content(filename: str) -> str:
 @tool
 def search_database(query: str) -> str:
     """for greeting messages"""
-    return f"Hi, iam HOI Bot. how can i help you?"
+    return "Hi, iam HOI Bot. how can i help you?"
+@tool
+def search_Hoi(query: str) -> str:
+    """User ask for HOI/ hoi"""
+    return  {"- English: I'm the HOI Bot, your assistant from Home of Inspiration — a place for learning, creativity, and connection.",
+                "- German: Ich bin der HOI Bot, Ihr Assistent von Home of Inspiration – ein Ort für Lernen, Kreativität und Verbindung."}
 
 # ---------- TOOL 2 ----------
 @tool
@@ -64,6 +69,11 @@ def mietinfo_retreathaus(query: str) -> str:
 
 # ---------- REGISTER TOOLS ----------
 tools = [
+    Tool(
+        name="HOI intro",
+        func=search_Hoi,
+        description="Useful for Hoi intro, or when user ask about HOI"
+    ),
     Tool(
         name="DatabaseSearch",
         func=search_database,
