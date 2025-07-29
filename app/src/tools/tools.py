@@ -70,14 +70,14 @@ def mietinfo_retreathaus(query: str) -> str:
 # ---------- REGISTER TOOLS ----------
 tools = [
     Tool(
-        name="HOI intro",
-        func=search_Hoi,
-        description="Useful for Hoi intro, or when user ask about HOI"
-    ),
-    Tool(
         name="DatabaseSearch",
         func=search_database,
         description="Useful for greeting questions and behave naturly"
+    ),
+    Tool(
+        name="HOI intro",
+        func=search_Hoi,
+        description="Useful for Hoi intro, or when user ask about HOI"
     ),
     Tool(
         name="UberMichInfo",
